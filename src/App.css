@@ -36,3 +36,15 @@
     transform: rotate(360deg);
   }
 }
+
+h1{
+  text-align: center;
+}
+
+footer{
+  text-align: center;
+}
+
+body{
+  background-image: url("../public/Best_City_in_the_World_(Unsplash).jpg")
+}
