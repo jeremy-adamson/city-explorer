@@ -26,6 +26,19 @@ class Main extends React.Component{
         )
     }
 
+    getWeather = async () => {
+        try {
+          const url = ``;
+          const response = await axios.get(url);
+          this.setState({
+            weatherData: response.data
+          });
+        }
+        catch (error) {
+          console.log(error)
+        }
+      }
+
     displaySearch = async(event) => {
         event.preventDefault();
 
