@@ -1,5 +1,6 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
+import Weather from "./Weather.js"
 
 class Location extends React.Component{
 
@@ -15,6 +16,12 @@ class Location extends React.Component{
                 width={500} />
                 <Card.Text> Lat: {this.props.state.cityData.lat}</Card.Text>
                 <Card.Text> Lon: {this.props.state.cityData.lon}</Card.Text>
+                
+                {this.props.state.weatherData.length > 0 &&
+                    <Weather weatherData = {this.props.state.weatherData}/>                    
+                }
+                
+                
             </Card>
             </div>
         )
