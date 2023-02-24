@@ -14,7 +14,8 @@ class Main extends React.Component {
             mapImage: '',
             restaurantData: [],
             locationData: [],
-            weatherData: []
+            weatherData: [],
+            moviesData: []
         }
     }
 
@@ -27,16 +28,35 @@ class Main extends React.Component {
     }
 
     getWeather = async () => {
-        try {
-            const url = `${process.env.REACT_APP_SERVER}/weather/?city=${this.state.city}`;
+        try {            
+            const url = `${process.env.REACT_APP_SERVER}/weather?lat=${this.state.cityData.lat}&lon=${this.state.cityData.lon}`;
             const response = await axios.get(url);
             this.setState({
                 weatherData: response.data
+            });
+                       
+        }
+        catch (error) {
+            console.log(error)
+        }
+    }
+
+    getMovies = async () => {
+        try{
+            const url = `${process.env.REACT_APP_SERVER}/movies/?city=${this.state.city}`;
+            const response = await axios.get(url);
+            this.setState({
+                moviesData: response.data
             });
         }
         catch (error) {
             console.log(error)
         }
+    }
+
+    getLocationInformation = async () => {
+         await this.getWeather();
+         await this.getMovies();
     }
 
     displaySearch = async (event) => {
@@ -46,16 +66,14 @@ class Main extends React.Component {
             
         try {
             let response = await axios.get(url);
-            let urlMap = `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATIONIQ}&center=${response.data[0].lat},${response.data[0].lon}&zoom=15`
-
-            await this.getWeather();
+            let urlMap = `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_LOCATIONIQ}&center=${response.data[0].lat},${response.data[0].lon}&zoom=15`;
 
             this.setState({
                 displayInfo: true,
                 cityData: response.data[0],
                 mapImage: urlMap
-            })
-
+            }, this.getLocationInformation)
+            
         }
         catch (err) {
             console.log(err);
@@ -63,7 +81,7 @@ class Main extends React.Component {
     }
 
     render() {
-        return (
+        return (            
             <>
                 <Container>
                     <Form>
@@ -80,9 +98,6 @@ class Main extends React.Component {
                         <Location state={this.state} />
                     </>
                 }
-
-
-
             </>
         )
     }
